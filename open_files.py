@@ -42,6 +42,9 @@ class HandFileOpener:
         self.BACK_HOLD = 0.3
         self.FIST_HOLD = 0.35
         self.fist_start = None
+        # Master-exit gesture settings (thumb + index + pinky)
+        self.MASTER_EXIT_HOLD = 2.0
+        self.master_exit_start = None
 
         self.types = [
             ('Word', ('.docx', '.doc')),
@@ -194,6 +197,29 @@ class HandFileOpener:
                     else:
                         self.cursor = (1 - self.cursor_alpha) * self.cursor + self.cursor_alpha * np.array(cursor_pt, dtype=float)
                     cursor = (int(self.cursor[0]), int(self.cursor[1]))
+
+                # --- Master-exit gesture detection (thumb + index + pinky) ---
+                try:
+                    thumb_up = lm[4].x < lm[3].x
+                    idx_up = lm[8].y < lm[6].y - 0.02
+                    mid_up = lm[12].y < lm[10].y - 0.02
+                    ring_up = lm[16].y < lm[14].y - 0.02
+                    pinky_up = lm[20].y < lm[18].y - 0.02
+                    # pattern: thumb, index, pinky up; middle and ring down
+                    if thumb_up and idx_up and pinky_up and (not mid_up) and (not ring_up):
+                        if self.master_exit_start is None:
+                            self.master_exit_start = time.time()
+                        else:
+                            if time.time() - self.master_exit_start >= self.MASTER_EXIT_HOLD:
+                                print("Master-exit gesture held — returning to master controller...")
+                                self.cap.release()
+                                cv2.destroyAllWindows()
+                                return
+                    else:
+                        self.master_exit_start = None
+                except Exception:
+                    # ignore landmark indexing errors
+                    self.master_exit_start = None
 
             # global fist-close (works from any state) - requires last_opened
             if self.last_opened and fist:
