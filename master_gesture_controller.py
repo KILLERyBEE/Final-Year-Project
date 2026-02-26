@@ -12,6 +12,8 @@ from open_files import HandFileOpener
 from app_controller import zoom_in, zoom_out
 from scroll import run_scroll
 from Zoom import run_zoom
+from slidetravel import run_slide_travel
+from gesture_screenshot import run_screenshot
 
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
@@ -64,6 +66,14 @@ def detect_mode_gesture(fingers):
     if thumb and index and not middle and not ring and not pinky:
         return "file_mode"
     
+    # Middle + Ring + Pinky up (no thumb/index) = Screenshot Mode
+    if not thumb and not index and middle and ring and pinky:
+        return "ss_mode"
+    
+    # Index + Middle fingers up (no thumb/ring/pinky) = Slide Travel Mode
+    if not thumb and index and middle and not ring and not pinky:
+        return "slide_mode"
+    
     # Index only up, others down = Zoom Mode (LEAST SPECIFIC)
     if not thumb and index and not middle and not ring and not pinky:
         return "zoom_mode"
@@ -114,6 +124,7 @@ class MasterGestureController:
     def __init__(self):
         self.mp_hands = mp.solutions.hands
         self.hands = self.mp_hands.Hands(
+            max_num_hands=1,
             min_detection_confidence=0.7,
             min_tracking_confidence=0.7
         )
@@ -130,10 +141,12 @@ class MasterGestureController:
         print("   MASTER GESTURE CONTROLLER - DETECTION MODE   ")
         print("==============================================")
         print("  Gesture Guide:                            ")
-        print("  [1] Thumb + Index: FILE OPENING MODE       ")
-        print("  [2] All Fingers: SCROLL MODE               ")
-        print("  [3] Index Only: ZOOM MODE                  ")
-        print("  [4] Fist: EXIT from any mode               ")
+        print("  [1] Thumb + Index:   FILE OPENING MODE    ")
+        print("  [2] All Fingers:     SCROLL MODE          ")
+        print("  [3] Index Only:      ZOOM MODE            ")
+        print("  [4] Index + Middle:  SLIDE TRAVEL MODE    ")
+        print("  [5] Mid+Ring+Pinky:  SCREENSHOT MODE      ")
+        print("  [6] Fist: EXIT from any mode              ")
         print("  Press ESC to quit application             ")
         print("==============================================\n")
         
@@ -152,8 +165,8 @@ class MasterGestureController:
                 cv2.rectangle(frame, (0, 0), (w, 100), (20, 20, 50), -1)
                 cv2.putText(frame, "DETECTION MODE - Perform Gesture", (15, 35),
                            cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-                cv2.putText(frame, "Thumb+Index: File | All Fingers: Scroll | Index Only: Zoom", (15, 70),
-                           cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 1)
+                cv2.putText(frame, "T+I:File|All:Scroll|Idx:Zoom|I+M:Slide|M+R+P:SS", (15, 70),
+                           cv2.FONT_HERSHEY_SIMPLEX, 0.58, (255, 255, 255), 1)
                 
                 if result.multi_hand_landmarks:
                     for hand_landmarks in result.multi_hand_landmarks:
@@ -236,6 +249,16 @@ class MasterGestureController:
                 print("\n>>> Entering ZOOM MODE <<<\n")
                 # Delegate to Zoom module
                 run_zoom()
+
+            elif mode_name == "slide_mode":
+                print("\n>>> Entering SLIDE TRAVEL MODE <<<\n")
+                # Delegate to slidetravel module
+                run_slide_travel()
+
+            elif mode_name == "ss_mode":
+                print("\n>>> Entering SCREENSHOT MODE <<<\n")
+                # Delegate to gesture_screenshot module
+                run_screenshot()
 
         except Exception as e:
             print(f"Error running mode: {e}")
