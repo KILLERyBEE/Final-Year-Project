@@ -238,10 +238,11 @@ class HandFileOpener:
                             time.sleep(0.15)
                         except Exception:
                             pass
-                    # clear record of last opened file
+                    # clear record of last opened file and return to menu
                     self.last_opened = None
                     self.fist_start = None
                     self.pinched = False
+                    self.state = 'menu'
             else:
                 self.fist_start = None
 
@@ -292,8 +293,8 @@ class HandFileOpener:
                                 try:
                                     os.startfile(path)
                                     self.last_opened = path
-                                    # return to main menu immediately after opening
-                                    self.state = 'menu'
+                                    # move to 'opened' state so user can fist-close
+                                    self.state = 'opened'
                                     self.choice = None
                                     self.files = []
                                     self.page = 0
@@ -326,7 +327,19 @@ class HandFileOpener:
 
             elif self.state == 'opened':
                 self.draw_opened(frame)
-                # (closing handled globally)
+                # back gesture (index+middle) returns to menu WITHOUT closing the file
+                if back_g:
+                    if self.back_start is None:
+                        self.back_start = time.time()
+                    back_elapsed = time.time() - self.back_start
+                    if cursor:
+                        cv2.putText(frame, 'Back: {:.0f}%'.format(min(100, int(back_elapsed / self.BACK_HOLD * 100))), (50, 460), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (200, 220, 255), 2)
+                    if back_elapsed >= self.BACK_HOLD:
+                        self.state = 'menu'
+                        self.back_start = None
+                        self.pinched = False
+                else:
+                    self.back_start = None
 
             # update pinch state
             if not pinch:
@@ -406,10 +419,14 @@ class HandFileOpener:
 
     def draw_opened(self, img):
         h, w, _ = img.shape
-        txt = 'Opened: ' + (os.path.basename(self.last_opened) if self.last_opened else '')
-        # transparent header with thin white border
+        fname = os.path.basename(self.last_opened) if self.last_opened else ''
+        # header bar
         cv2.rectangle(img, (20, 20), (w - 20, 70), (255, 255, 255), 1)
-        cv2.putText(img, txt, (40, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 0), 1)
+        cv2.putText(img, 'Opened: ' + fname, (40, 52), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (255, 255, 255), 2)
+        # hint: fist to close
+        cv2.putText(img, 'FIST  -> close document', (40, 110), cv2.FONT_HERSHEY_SIMPLEX, 0.65, (200, 180, 180), 2)
+        # hint: back gesture to return to menu
+        cv2.putText(img, 'PEACE -> back to menu', (40, 145), cv2.FONT_HERSHEY_SIMPLEX, 0.65, (180, 210, 255), 2)
 
 
 def main():
