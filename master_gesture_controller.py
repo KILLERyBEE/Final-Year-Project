@@ -14,6 +14,7 @@ from scroll import run_scroll
 from Zoom import run_zoom
 from slidetravel import run_slide_travel
 from gesture_screenshot import run_screenshot
+from video_player import run_video_player
 
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
@@ -27,11 +28,11 @@ def fingers_up(hand, h, w):
     """
     lm = hand.landmark
     
-    # Improved thumb detection with better threshold (hand-side agnostic)
+    # Improved thumb detection - higher threshold reduces false positives
     thumb_tip = lm[4]
     thumb_pip = lm[2]
     # Thumb is extended if the horizontal offset from thumb PIP is significant
-    thumb_extended = abs(thumb_tip.x - thumb_pip.x) > 0.04
+    thumb_extended = abs(thumb_tip.x - thumb_pip.x) > 0.06
     fingers = [thumb_extended]
     
     # Other fingers - check if tip is above PIP joint (extended)
@@ -74,6 +75,11 @@ def detect_mode_gesture(fingers):
     if not thumb and index and middle and not ring and not pinky:
         return "slide_mode"
     
+    # Index + Middle + Ring up, no thumb, no pinky = Video Player Mode
+    # (distinct from scroll=all5, slide=I+M, ss=M+R+P, zoom=I only)
+    if not thumb and index and middle and ring and not pinky:
+        return "video_mode"
+    
     # Index only up, others down = Zoom Mode (LEAST SPECIFIC)
     if not thumb and index and not middle and not ring and not pinky:
         return "zoom_mode"
@@ -84,6 +90,44 @@ def detect_mode_gesture(fingers):
 def is_fist(fingers):
     """Check if all fingers are closed (fist)"""
     return not any(fingers)
+
+
+# ==================== SLIDESHOW AUTO-START HELPER ====================
+
+def start_ppt_slideshow(wait=1.5):
+    """Focus an open PowerPoint window and press F5 to start slideshow.
+    
+    Returns True if a PowerPoint window was found and F5 was sent.
+    wait: seconds to wait after focusing before sending F5.
+    """
+    try:
+        import pygetwindow as gw
+        all_wins = gw.getAllWindows()
+        # Look for any window whose title contains 'PowerPoint'
+        ppt_wins = [w for w in all_wins
+                    if 'powerpoint' in w.title.lower() or '.pptx' in w.title.lower()
+                    or '.ppt' in w.title.lower()]
+        if ppt_wins:
+            win = ppt_wins[0]
+            print(f"  [SlideMode] Found PPT window: '{win.title}'")
+            try:
+                win.activate()
+            except Exception:
+                pass
+            time.sleep(wait)          # give PowerPoint time to focus
+            pyautogui.press('f5')     # F5 = Start Slideshow from beginning
+            time.sleep(0.5)
+            print("  [SlideMode] Sent F5 → Slideshow started!")
+            return True
+        else:
+            print("  [SlideMode] No open PowerPoint window found — start slideshow manually.")
+            return False
+    except ImportError:
+        print("  [SlideMode] pygetwindow not installed — skipping auto-slideshow.")
+        return False
+    except Exception as e:
+        print(f"  [SlideMode] Auto-slideshow error: {e}")
+        return False
 
 
 # Scroll and Zoom modes are provided by external modules:
@@ -141,13 +185,14 @@ class MasterGestureController:
         print("   MASTER GESTURE CONTROLLER - DETECTION MODE   ")
         print("==============================================")
         print("  Gesture Guide:                            ")
-        print("  [1] Thumb + Index:   FILE OPENING MODE    ")
-        print("  [2] All Fingers:     SCROLL MODE          ")
-        print("  [3] Index Only:      ZOOM MODE            ")
-        print("  [4] Index + Middle:  SLIDE TRAVEL MODE    ")
-        print("  [5] Mid+Ring+Pinky:  SCREENSHOT MODE      ")
-        print("  [6] Fist: EXIT from any mode              ")
-        print("  Press ESC to quit application             ")
+        print("  [1] Thumb + Index:     FILE OPENING MODE    ")
+        print("  [2] All Fingers:       SCROLL MODE          ")
+        print("  [3] Index Only:        ZOOM MODE            ")
+        print("  [4] Index + Middle:    SLIDE TRAVEL MODE    ")
+        print("  [5] Mid+Ring+Pinky:    SCREENSHOT MODE      ")
+        print("  [6] Index+Middle+Ring (no Thumb/Pinky): VIDEO MODE ")
+        print("  [7] Fist: EXIT from any mode               ")
+        print("  Press ESC to quit application              ")
         print("==============================================\n")
         
         while True:
@@ -252,6 +297,8 @@ class MasterGestureController:
 
             elif mode_name == "slide_mode":
                 print("\n>>> Entering SLIDE TRAVEL MODE <<<\n")
+                # Auto-start slideshow if PowerPoint is already open
+                start_ppt_slideshow(wait=1.5)
                 # Delegate to slidetravel module
                 run_slide_travel()
 
@@ -259,6 +306,11 @@ class MasterGestureController:
                 print("\n>>> Entering SCREENSHOT MODE <<<\n")
                 # Delegate to gesture_screenshot module
                 run_screenshot()
+
+            elif mode_name == "video_mode":
+                print("\n>>> Entering VIDEO PLAYER MODE <<<\n")
+                # Delegate to video_player module
+                run_video_player()
 
         except Exception as e:
             print(f"Error running mode: {e}")
