@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="About AirNav – Meet the team behind gesture-driven automation. Learn our mission, vision, and the people who built AirNav." />
+    <title>AirNav – About Us</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="about.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+</head>
+
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo" onclick="window.location.href='index.html'">
+                <span class="logo-air">Air</span><span class="logo-nav">Nav</span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="guide.html">Guide</a></li>
+                <li><a href="about.html" class="nav-active">About Us</a></li>
+            </ul>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ===== HERO SECTION ===== -->
+    <section class="about-hero">
+        <div class="about-hero-dots"></div>
+        <div class="about-hero-inner">
+            <!-- Left: Text -->
+            <div class="about-hero-text reveal">
+                <h1 class="about-hero-title">
+                    Transforming Interaction <span class="about-highlight">in the<br />Digital Era</span>
+                </h1>
+                <p class="about-hero-desc">
+                    Welcome to AirNav, where innovation meets intuitive control. AirNav is designed to redefine the way
+                    users
+                    interact with technology through intelligent hand gesture automation. We are driven by a passion for
+                    combining
+                    computer vision and smart systems to create a seamless, touch-free digital experience.
+                </p>
+                <p class="about-hero-desc">
+                    Our mission is to make human-computer interaction faster, smarter, and more natural. By turning
+                    simple
+                    gestures into powerful system commands, AirNav enhances productivity, accessibility, and user
+                    comfort across
+                    presentations, learning environments, and everyday computing.
+                </p>
+                <p class="about-hero-desc">
+                    Built with a focus on precision, reliability, and innovation, AirNav represents the next step toward
+                    a more
+                    interactive and effortless digital future.
+                </p>
+            </div>
+    </section>
+
+    <!-- ===== TEAM SECTION ===== -->
+    <section class="about-team-section">
+        <div class="about-team-inner">
+            <h2 class="about-team-title">
+                <span class="about-title-muted">Our</span> Team Members
+            </h2>
+
+            <div class="about-team-grid">
+
+                <!-- Member 1 -->
+                <div class="team-card reveal">
+                    <div class="team-photo-wrap">
+                        <img src="team/avdhut.jpg" alt="Avdhut Madhavi" class="team-photo"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'" />
+                        <div class="team-photo-fallback">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <circle cx="12" cy="8" r="4" />
+                                <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="team-name">Avdhut Madhavi</p>
+                </div>
+
+                <!-- Member 2 -->
+                <div class="team-card reveal">
+                    <div class="team-photo-wrap">
+                        <img src="team/swarali.jpg" alt="Swarali Patole" class="team-photo"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'" />
+                        <div class="team-photo-fallback">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <circle cx="12" cy="8" r="4" />
+                                <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="team-name">Swarali Patole</p>
+                </div>
+
+                <!-- Member 3 -->
+                <div class="team-card reveal">
+                    <div class="team-photo-wrap">
+                        <img src="team/sneha.jpg" alt="Sneha Sagale" class="team-photo"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'" />
+                        <div class="team-photo-fallback">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <circle cx="12" cy="8" r="4" />
+                                <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="team-name">Sneha Sagale</p>
+                </div>
+
+                <!-- Member 4 -->
+                <div class="team-card reveal">
+                    <div class="team-photo-wrap">
+                        <img src="team/vaishnavi.jpg" alt="Vaishnavi Wagh" class="team-photo"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'" />
+                        <div class="team-photo-fallback">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <circle cx="12" cy="8" r="4" />
+                                <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="team-name">Vaishnavi Wagh</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CTA SECTION ===== -->
+    <section class="about-cta-section">
+        <div class="about-cta-dots"></div>
+        <div class="about-cta-inner reveal">
+            <h2 class="about-cta-title">Ready to Experience the Future of Control?</h2>
+            <p class="about-cta-desc">
+                Take the next step toward smarter interaction with AirNav. Designed to simplify the way you navigate
+                your
+                digital world, AirNav brings touch-free precision and seamless gesture-based automation to your
+                fingertips.
+            </p>
+            <p class="about-cta-desc">
+                Whether you're delivering presentations, managing documents, controlling media, or enhancing
+                productivity,
+                AirNav empowers you with intuitive and efficient system control. Step into a more natural way of
+                interacting
+                with technology and experience the freedom of hands-free navigation.
+            </p>
+            <p class="about-cta-desc">Let AirNav transform the way you connect with your system.</p>
+            <p class="about-cta-sub">Unlock Your Digital Potential Today</p>
+            <a class="btn-cta-pill" href="index.html#cta">Get Started</a>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="about-footer">
+        <div class="about-footer-inner">
+            <p class="about-footer-copy">@2023 Digitax. All Rights Reserved.</p>
+            <div class="about-footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms &amp; Conditions</a>
+                <a href="#">Cookie Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="about.js"></script>
+</body>
+
+</html>

@@ -15,6 +15,8 @@ from Zoom import run_zoom
 from slidetravel import run_slide_travel
 from gesture_screenshot import run_screenshot
 from video_player import run_video_player
+from app_control import run_app_control
+from volume_control import run_volume_control
 
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
@@ -84,6 +86,14 @@ def detect_mode_gesture(fingers):
     if not thumb and index and not middle and not ring and not pinky:
         return "zoom_mode"
     
+    # Thumb + Pinky up, others down = App Switch Mode (shaka/hang-loose)
+    if thumb and not index and not middle and not ring and pinky:
+        return "app_switch_mode"
+
+    # Index + Pinky up, no thumb/middle/ring = Volume Control Mode
+    if not thumb and index and not middle and not ring and pinky:
+        return "volume_mode"
+
     return None
 
 
@@ -184,16 +194,21 @@ class MasterGestureController:
         print("==============================================")
         print("   MASTER GESTURE CONTROLLER - DETECTION MODE   ")
         print("==============================================")
-        print("  Gesture Guide:                            ")
-        print("  [1] Thumb + Index:     FILE OPENING MODE    ")
-        print("  [2] All Fingers:       SCROLL MODE          ")
-        print("  [3] Index Only:        ZOOM MODE            ")
-        print("  [4] Index + Middle:    SLIDE TRAVEL MODE    ")
-        print("  [5] Mid+Ring+Pinky:    SCREENSHOT MODE      ")
-        print("  [6] Index+Middle+Ring (no Thumb/Pinky): VIDEO MODE ")
-        print("  [7] Fist: EXIT from any mode               ")
-        print("  Press ESC to quit application              ")
-        print("==============================================\n")
+        print("  Gesture Guide:")
+        print("  ─────────────────────────────────────────────────────")
+        print("  [1] 🤜 Thumb + Index             → FILE OPENING MODE   ")
+        print("  [2] 🖐 All 5 Fingers            → SCROLL MODE         ")
+        print("  [3] ☝  Index Only               → ZOOM MODE           ")
+        print("  [4] ✌  Index + Middle           → SLIDE TRAVEL MODE   ")
+        print("  [5] 🤟 Middle + Ring + Pinky    → SCREENSHOT MODE     ")
+        print("  [6] 🖖 Index+Middle+Ring        → VIDEO PLAYER MODE   ")
+        print("  [7] 🤙 Thumb + Pinky (Shaka)    → APP SWITCH MODE     ")
+        print("  [8] 🫲 Index + Pinky            → VOLUME CONTROL MODE ")
+        print("  ─────────────────────────────────────────────────────")
+        print("  Hold gesture for 10 frames to confirm entry.")
+        print("  Fist (in any mode) → EXIT back to Detection Mode")
+        print("  ESC → Quit application")
+        print("======================================================\n")
         
         while True:
             try:
@@ -206,12 +221,13 @@ class MasterGestureController:
                 rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 result = self.hands.process(rgb)
                 
-                # Display header
-                cv2.rectangle(frame, (0, 0), (w, 100), (20, 20, 50), -1)
-                cv2.putText(frame, "DETECTION MODE - Perform Gesture", (15, 35),
-                           cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-                cv2.putText(frame, "T+I:File|All:Scroll|Idx:Zoom|I+M:Slide|M+R+P:SS", (15, 70),
-                           cv2.FONT_HERSHEY_SIMPLEX, 0.58, (255, 255, 255), 1)
+                cv2.rectangle(frame, (0, 0), (w, 115), (20, 20, 50), -1)
+                cv2.putText(frame, "MASTER CONTROLLER  -  Perform Gesture to Enter Mode",
+                           (15, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.72, (0, 255, 0), 2)
+                cv2.putText(frame, "T+I:File | All5:Scroll | Idx:Zoom | I+M:Slide | M+R+P:Screenshot",
+                           (15, 65), cv2.FONT_HERSHEY_SIMPLEX, 0.50, (200, 220, 255), 1)
+                cv2.putText(frame, "I+M+R:Video | T+Pinky:AppSwitch | I+Pinky:Volume",
+                           (15, 90), cv2.FONT_HERSHEY_SIMPLEX, 0.50, (200, 220, 255), 1)
                 
                 if result.multi_hand_landmarks:
                     for hand_landmarks in result.multi_hand_landmarks:
@@ -309,8 +325,15 @@ class MasterGestureController:
 
             elif mode_name == "video_mode":
                 print("\n>>> Entering VIDEO PLAYER MODE <<<\n")
-                # Delegate to video_player module
                 run_video_player()
+
+            elif mode_name == "app_switch_mode":
+                print("\n>>> Entering APP SWITCH MODE <<<\n")
+                run_app_control()
+
+            elif mode_name == "volume_mode":
+                print("\n>>> Entering VOLUME CONTROL MODE <<<\n")
+                run_volume_control()
 
         except Exception as e:
             print(f"Error running mode: {e}")

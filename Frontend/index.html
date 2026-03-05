@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="AirNav – Gesture-Driven Automation That Empowers Interaction. Control your digital world with intuitive hand gestures." />
+    <title>AirNav – Gesture-Driven Automation</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+</head>
+
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-air">Air</span><span class="logo-nav">Nav</span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#hero">Home</a></li>
+                <li><a href="guide.html">Guide</a></li>
+                <li><a href="about.html">About Us</a></li>
+            </ul>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ===== HERO SECTION ===== -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">
+                    Gesture-Driven<br />
+                    Automation
+                    <span class="highlight"> That<br />Empowers Interaction</span>
+                </h1>
+                <p class="hero-desc">
+                    AirNav transforms the way you interact with digital systems. Our advanced AI-powered gesture
+                    recognition system intelligently tracks your hand movements and translates them into precise digital
+                    commands — from controlling presentations, browsing files, to adjusting system volume. Your hands
+                    become the ultimate interface.
+                </p>
+                <p class="hero-sub">What do you want to automate first?</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" id="getStartedBtn">Get Started</button>
+                    <button class="btn btn-outline" id="learnMoreBtn">Learn More →</button>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <img src="image.png" alt="AirNav Gesture Control Visual" class="hero-image" />
+            </div>
+        </div>
+        <div class="hero-glow"></div>
+    </section>
+
+    <!-- ===== CTA SECTION ===== -->
+    <section class="cta-section" id="cta">
+        <div class="cta-inner">
+            <h2 class="cta-title">Ready to Experience the Future of Control?</h2>
+            <p class="cta-desc">
+                The Start Camera option activates the system's webcam and begins real-time gesture detection, allowing
+                users to control their device through hand movements. Once enabled, AirNav starts tracking gestures and
+                converts them into system commands such as scrolling, zooming, and media control. The Stop Camera option
+                safely disables the webcam and pauses gesture recognition, ensuring privacy and giving users full
+                control over when the system is active.
+            </p>
+            <p class="cta-sub">Unlock Your Digital Potential Today</p>
+            <div class="cta-buttons">
+                <button class="btn btn-cta-pill" id="startCameraBtn">Start Camera</button>
+                <button class="btn btn-cta-pill" id="stopCameraBtn">Stop Camera</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FEATURES SECTION ===== -->
+    <section class="features-section" id="features">
+        <div class="features-header">
+            <h2>Core <span class="highlight">Features</span></h2>
+            <p class="features-sub">
+                AirNav uses computer vision and deep learning to detect hand gestures in real-time, converting natural
+                hand movements into precise system commands. Powered by MediaPipe and custom CNN models, our system
+                supports a wide variety of gesture-driven interactions.
+            </p>
+        </div>
+
+        <div class="features-grid">
+
+            <!-- Card 1 -->
+            <div class="feature-card" id="card-doc">
+                <div class="feature-icon-wrap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <rect x="4" y="2" width="16" height="20" rx="2" />
+                        <line x1="8" y1="7" x2="16" y2="7" />
+                        <line x1="8" y1="11" x2="16" y2="11" />
+                        <line x1="8" y1="15" x2="12" y2="15" />
+                    </svg>
+                </div>
+                <h3>Document Control</h3>
+                <p>Navigate through documents and files using intuitive gestures. Swipe, scroll, zoom, and flip through
+                    pages without touching a single key. AirNav's document control module recognises open-palm swipes
+                    for page turns and pinch gestures for zooming, enabling seamless reading and editing workflow
+                    automation.</p>
+                <a class="btn-card" href="guide.html">Learn More →</a>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="feature-card" id="card-zoom">
+                <div class="feature-icon-wrap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                        <line x1="8" y1="11" x2="14" y2="11" />
+                        <line x1="11" y1="8" x2="11" y2="14" />
+                    </svg>
+                </div>
+                <h3>Zoom Control</h3>
+                <p>Effortlessly zoom in and out of your screen or applications with a simple pinch gesture. The zoom
+                    control module intelligently detects the distance between your thumb and index finger, translating
+                    finger spacing into smooth, lag-free zoom transitions across browsers, documents, images, and maps
+                    in real-time.</p>
+                <a class="btn-card" href="guide.html">Learn More →</a>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="feature-card" id="card-slide">
+                <div class="feature-icon-wrap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <rect x="2" y="3" width="20" height="14" rx="2" />
+                        <polyline points="8,21 12,17 16,21" />
+                        <line x1="12" y1="17" x2="12" y2="21" />
+                    </svg>
+                </div>
+                <h3>Slide Navigation</h3>
+                <p>Transform your presentations with hands-free slide control. A right-swipe gesture advances to the
+                    next slide while a left-swipe goes back. The system supports laser-pointer simulation via hand
+                    position tracking, helping speakers deliver impactful presentations without a physical clicker or
+                    remote.</p>
+                <a class="btn-card" href="guide.html">Learn More →</a>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="feature-card" id="card-volume">
+                <div class="feature-icon-wrap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" />
+                        <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+                    </svg>
+                </div>
+                <h3>Volume Adjustment</h3>
+                <p>Control system audio intuitively with vertical hand gestures. Raising your hand increases volume
+                    while lowering it decreases it. AirNav maps the vertical position of your palm to the system audio
+                    level in real-time, supporting both smooth gradual changes and quick mute toggles via a fist
+                    gesture.</p>
+                <a class="btn-card" href="guide.html">Learn More →</a>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="feature-card" id="card-video">
+                <div class="feature-icon-wrap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <polygon points="23,7 16,12 23,17" />
+                        <rect x="1" y="5" width="15" height="14" rx="2" />
+                    </svg>
+                </div>
+                <h3>Video Playback Control</h3>
+                <p>AirNav supports media controls including play, pause, fast-forward, and rewind — all through mid-air
+                    gestures. A closed fist pauses playback, while pointing sideways seeks forward or backward. The
+                    system integrates with system-level media APIs, giving you universal control over any video
+                    application or stream.</p>
+                <a class="btn-card" href="guide.html">Learn More →</a>
+            </div>
+
+            <!-- Card 6 -->
+            <div class="feature-card" id="card-scroll">
+                <div class="feature-icon-wrap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M12 5v14" />
+                        <polyline points="19,12 12,19 5,12" />
+                        <polyline points="19,5 12,12 5,5" style="opacity:0.4" />
+                    </svg>
+                </div>
+                <h3>Scroll Control</h3>
+                <p>The scroll control module tracks the orientation and position of your hand to scroll web pages and
+                    documents naturally. Moving your index finger upward scrolls the content up, while pointing it down
+                    scrolls down. The system supports velocity-sensitive scrolling for both subtle fine-control and
+                    rapid navigation across long pages.</p>
+                <a class="btn-card" href="guide.html">Learn More →</a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-logo">
+                <span class="logo-air">Air</span><span class="logo-nav">Nav</span>
+            </div>
+            <p class="footer-copy">© 2024 AirNav. Gesture-Driven Automation. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- ===== MODALS ===== -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-box" id="modalBox">
+            <button class="modal-close" id="modalClose">✕</button>
+            <div class="modal-icon" id="modalIcon"></div>
+            <h2 id="modalTitle"></h2>
+            <p id="modalBody"></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

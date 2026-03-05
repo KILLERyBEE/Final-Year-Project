@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="AirNav Guide – Learn how to use gesture-driven modules including Scroll, Zoom, Volume, Video, Document Control and more." />
+    <title>AirNav – User Guide</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="guide.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+</head>
+
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo" onclick="window.location.href='index.html'">
+                <span class="logo-air">Air</span><span class="logo-nav">Nav</span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="guide.html" class="nav-active">Guide</a></li>
+                <li><a href="about.html">About Us</a></li>
+            </ul>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ===== GUIDE HERO ===== -->
+    <section class="guide-hero">
+        <div class="guide-hero-dot-bg"></div>
+        <div class="guide-hero-content">
+            <h1 class="guide-hero-title">
+                Get in <span class="guide-highlight">Your Guide</span> To AirNav
+            </h1>
+            <p class="guide-hero-sub">
+                Explore how to use AirNav's gesture-driven modules. Master each feature, gesture, and shortcut to take
+                full control of your digital world.
+            </p>
+        </div>
+    </section>
+
+    <!-- ===== MODULE CARDS GRID ===== -->
+    <section class="guide-grid-section">
+        <div class="guide-grid">
+
+            <!-- Card 1: Main Program -->
+            <div class="guide-card reveal">
+                <div class="guide-card-header">
+                    <div class="guide-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <rect x="2" y="3" width="20" height="14" rx="2" />
+                            <polyline points="8,21 12,17 16,21" />
+                            <line x1="12" y1="17" x2="12" y2="21" />
+                        </svg>
+                    </div>
+                    <h2>Main Program</h2>
+                </div>
+                <p class="guide-card-desc">The main program serves as the central hub for all gesture-controlled
+                    modules. It initialises the webcam, loads the gesture recognition model, and delegates control to
+                    the appropriate module based on the detected gesture mode.</p>
+                <a class="guide-btn" href="index.html#cta">Try Now →</a>
+                <div class="guide-gestures">
+                    <p class="guide-gestures-title">Gesture Shortcuts</p>
+                    <ul>
+                        <li><span class="key">All Fingers Up</span> – Activate Scroll Mode</li>
+                        <li><span class="key">Index Finger Up</span> – Activate Zoom Mode</li>
+                        <li><span class="key">Index and Pinky Finger Up</span> – Activate Volume Mode</li>
+                        <li><span class="key">Index, Middle and Ring Finger Up</span> – Activate Video Mode</li>
+                        <li><span class="key">Index and Thumb Finger Up</span> – Activate Document Mode</li>
+                        <li><span class="key">Index and Middle Finger Up</span> – Slide Travel</li>
+                        <li><span class="key">Middle and Index and Pinky Finger Up</span> – Screenshot Mode</li>
+                        <li><span class="key">Pinky and Thumb Finger Up</span> – AppSwitching Mode</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Card 2: Scroll Control -->
+            <div class="guide-card reveal">
+                <div class="guide-card-header">
+                    <div class="guide-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <path d="M12 5v14" />
+                            <polyline points="19,12 12,19 5,12" />
+                            <polyline points="19,5 12,12 5,5" style="opacity:0.4" />
+                        </svg>
+                    </div>
+                    <h2>Scroll Control</h2>
+                </div>
+                <p class="guide-card-desc">The scroll module tracks the orientation and position of your index finger to
+                    scroll web pages and documents naturally. It supports velocity-sensitive scrolling for both
+                    fine-control and rapid navigation across long pages.</p>
+                <a class="guide-btn" href="index.html#cta">Try Now →</a>
+                <div class="guide-gestures">
+                    <p class="guide-gestures-title">Gesture Shortcuts</p>
+                    <ul>
+                        <li><span class="key">Index Finger Up</span> – Scroll Up</li>
+                        <li><span class="key">Index and Middle Finger Up</span> – Scroll Down</li>
+                        <li><span class="key">Thumb Up</span> – Fast Scroll Up</li>
+                        <li><span class="key">All Fingers Up</span> – Fast Scroll Down</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Card 3: Zoom Control -->
+            <div class="guide-card reveal">
+                <div class="guide-card-header">
+                    <div class="guide-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                            <line x1="8" y1="11" x2="14" y2="11" />
+                            <line x1="11" y1="8" x2="11" y2="14" />
+                        </svg>
+                    </div>
+                    <h2>Zoom Control</h2>
+                </div>
+                <p class="guide-card-desc">Zoom in and out of your screen or applications with a simple pinch gesture.
+                    The module intelligently detects the distance between your thumb and index finger, translating
+                    finger spacing into smooth, lag-free zoom transitions in real-time.</p>
+                <a class="guide-btn" href="index.html#cta">Try Now →</a>
+                <div class="guide-gestures">
+                    <p class="guide-gestures-title">Gesture Shortcuts</p>
+                    <ul>
+                        <li><span class="key">Index and Middle Finger Up</span> – Zoom Out</li>
+                        <li><span class="key">Index Finger Up</span> – Zoom In</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Card 4: Volume Adjustment -->
+            <div class="guide-card reveal">
+                <div class="guide-card-header">
+                    <div class="guide-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" />
+                            <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+                            <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+                        </svg>
+                    </div>
+                    <h2>Volume Adjustment</h2>
+                </div>
+                <p class="guide-card-desc">Control system audio intuitively with vertical hand gestures. AirNav maps the
+                    vertical position of your palm to the system audio level in real-time, supporting both smooth
+                    gradual changes and quick mute toggles via a fist gesture.</p>
+                <a class="guide-btn" href="index.html#cta">Try Now →</a>
+                <div class="guide-gestures">
+                    <p class="guide-gestures-title">Gesture Shortcuts</p>
+                    <ul>
+                        <li><span class="key">Index Finger Up</span> – Increase Volume</li>
+                        <li><span class="key">Index and Middle Finger Up</span> – Decrease Volume</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Card 5: Video Playback Control -->
+            <div class="guide-card reveal">
+                <div class="guide-card-header">
+                    <div class="guide-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <polygon points="23,7 16,12 23,17" />
+                            <rect x="1" y="5" width="15" height="14" rx="2" />
+                        </svg>
+                    </div>
+                    <h2>Video Playback Control</h2>
+                </div>
+                <p class="guide-card-desc">AirNav supports media controls including play, pause, fast-forward, and
+                    rewind — all through mid-air gestures. A closed fist pauses playback, while pointing sideways seeks
+                    forward or backward. Works universally with any video application.</p>
+                <a class="guide-btn" href="index.html#cta">Try Now →</a>
+                <div class="guide-gestures">
+                    <p class="guide-gestures-title">Gesture Shortcuts</p>
+                    <ul>
+                        <li><span class="key">Pinch</span>- Open a Video</li>
+                        <li><span class="key">Fist</span> – Close a Video</li>
+                        <li><span class="key">All Fingers Up</span> – Play/Pause</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Card 6: App Switching -->
+            <div class="guide-card reveal">
+                <div class="guide-card-header">
+                    <div class="guide-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <rect x="2" y="2" width="9" height="9" rx="1" />
+                            <rect x="13" y="2" width="9" height="9" rx="1" />
+                            <rect x="2" y="13" width="9" height="9" rx="1" />
+                            <rect x="13" y="13" width="9" height="9" rx="1" />
+                        </svg>
+                    </div>
+                    <h2>App Switching</h2>
+                </div>
+                <p class="guide-card-desc">Switch between open applications seamlessly using hand gestures. App
+                    switching detects directional swipes and activates the OS-level Alt+Tab functionality, allowing you
+                    to navigate your taskbar without touching a single key.</p>
+                <a class="guide-btn" href="index.html#cta">Try Now →</a>
+                <div class="guide-gestures">
+                    <p class="guide-gestures-title">Gesture Shortcuts</p>
+                    <ul>
+                        <li><span class="key">Finger to Right</span> – Next App</li>
+                        <li><span class="key">Finger to Left</span> – Previous App</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Card 7: Document Control -->
+            <div class="guide-card reveal">
+                <div class="guide-card-header">
+                    <div class="guide-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <rect x="4" y="2" width="16" height="20" rx="2" />
+                            <line x1="8" y1="7" x2="16" y2="7" />
+                            <line x1="8" y1="11" x2="16" y2="11" />
+                            <line x1="8" y1="15" x2="12" y2="15" />
+                        </svg>
+                    </div>
+                    <h2>Document Control</h2>
+                </div>
+                <p class="guide-card-desc">Navigate through documents and files using intuitive gestures. Swipe, scroll,
+                    zoom, and flip through pages without touching a single key. AirNav recognises open-palm swipes for
+                    page turns and pinch gestures for zooming.</p>
+                <a class="guide-btn" href="index.html#cta">Try Now →</a>
+                <div class="guide-gestures">
+                    <p class="guide-gestures-title">Gesture Shortcuts</p>
+                    <ul>
+                        <li><span class="key">Pinch</span> – Select and Open</li>
+                        <li><span class="key">Index and Middle Finger Up</span> – Previous Page</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Card 8: Slide Travel -->
+            <div class="guide-card reveal">
+                <div class="guide-card-header">
+                    <div class="guide-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <rect x="2" y="3" width="20" height="14" rx="2" />
+                            <polyline points="8,21 12,17 16,21" />
+                            <line x1="12" y1="17" x2="12" y2="21" />
+                        </svg>
+                    </div>
+                    <h2>Slide Travel</h2>
+                </div>
+                <p class="guide-card-desc">Slide travel allows you to control high-res slide presentations from a
+                    distance, by simply gesturing left or right to advance or reverse slides. The system also supports a
+                    laser-pointer simulation via tracked hand position for emphasis during presenting.</p>
+                <a class="guide-btn" href="index.html#cta">Try Now →</a>
+                <div class="guide-gestures">
+                    <p class="guide-gestures-title">Gesture Shortcuts</p>
+                    <ul>
+                        <li><span class="key">Index Finger Up</span> – Next Slide</li>
+                        <li><span class="key">Index and Middle Finger Up</span> – Previous Slide</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ===== ADDITIONAL GESTURES ===== -->
+    <section class="guide-support-section">
+        <div class="guide-support-inner">
+            <h2 class="guide-support-title">Additional Gestures</h2>
+            <div class="guide-support-grid">
+                <div class="guide-support-card reveal">
+                    <p>The Screenshot feature allows users to capture the current screen instantly using a simple hand
+                        gesture, making it quick and convenient to save on-screen content.
+                    </p>
+                    <p class="guide-support-note">Hold Index Finger Up For 3 Seconds to Capture a Screenshot</p>
+                </div>
+                <div class="guide-support-card reveal">
+                    <p>This gesture allows users to exit the current control mode and return to the main program,
+                        making it easy to switch between different gesture features.</p>
+                    <p class="guide-support-note">Show Index, Thumb and Pinky Finger Up to get back</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== THANK YOU ===== -->
+    <section class="guide-found-section">
+        <div class="guide-found-inner reveal">
+            <h2>Thank You!</h2>
+            <p>Thank you for exploring AirNav. We look forward to helping you experience a smarter and more intuitive
+                way of interacting with your system through gesture-based automation.</p>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-logo">
+                <span class="logo-air">Air</span><span class="logo-nav">Nav</span>
+            </div>
+            <p class="footer-copy">© 2024 AirNav. Gesture-Driven Automation. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- ===== MODALS ===== -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-box" id="modalBox">
+            <button class="modal-close" id="modalClose">✕</button>
+            <div class="modal-icon" id="modalIcon"></div>
+            <h2 id="modalTitle"></h2>
+            <p id="modalBody"></p>
+        </div>
+    </div>
+
+    <script src="guide.js"></script>
+</body>
+
+</html>
