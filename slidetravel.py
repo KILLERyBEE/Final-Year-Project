@@ -39,7 +39,6 @@ def fingers_up(hand):
 
 
 def _is_fist(hand):
-    """All four finger tips close to wrist → fist."""
     lm = hand.landmark
     wrist = np.array([lm[0].x, lm[0].y])
     tips = [8, 12, 16, 20]
@@ -49,11 +48,9 @@ def _is_fist(hand):
 
 
 def _close_ppt():
-    """Close any open PowerPoint window. Returns True if closed."""
     closed = False
     keywords = ('powerpoint', '.pptx', '.ppt')
 
-    # Method 1: pygetwindow
     try:
         if gw:
             wins = [w for w in gw.getAllWindows()
@@ -69,7 +66,6 @@ def _close_ppt():
     except Exception:
         pass
 
-    # Method 2: win32gui WM_CLOSE
     if not closed:
         try:
             if win32gui and win32con:
@@ -84,7 +80,6 @@ def _close_ppt():
         except Exception:
             pass
 
-    # Method 3: Escape first (exit slideshow), then Alt+F4
     if not closed:
         try:
             pyautogui.press('escape')   # exit slideshow → back to normal view
@@ -98,14 +93,11 @@ def _close_ppt():
 
 
 def run_slide_travel():
-    """Run the slide travel (PPT gesture control) mode."""
-    print("\n========== SLIDE TRAVEL MODE ACTIVE ==========")
-    print("  ☝️  Index finger only          → NEXT SLIDE")
-    print("  ✌️  Index + Middle             → PREVIOUS SLIDE")
-    print("  ✊  Fist (hold 0.6s)            → CLOSE PPT")
-    print("  🤙  Thumb + Index + Pinky      → EXIT to Master")
+    print("Index finger only          → NEXT SLIDE")
+    print("Index + Middle             → PREVIOUS SLIDE")
+    print("Fist (hold 0.6s)            → CLOSE PPT")
+    print("Thumb + Index + Pinky      → EXIT to Master")
     print("  Press ESC to EXIT")
-    print("===============================================\n")
 
     hands = mp_hands.Hands(
         max_num_hands=1,

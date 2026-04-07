@@ -24,10 +24,6 @@ mp_drawing = mp.solutions.drawing_utils
 # ==================== UTILITY FUNCTIONS ====================
 
 def fingers_up(hand, h, w):
-    """
-    Detect which fingers are up based on hand landmarks.
-    Returns: [thumb, index, middle, ring, pinky] as boolean list
-    """
     lm = hand.landmark
     
     # Improved thumb detection - higher threshold reduces false positives
@@ -37,10 +33,8 @@ def fingers_up(hand, h, w):
     thumb_extended = abs(thumb_tip.x - thumb_pip.x) > 0.06
     fingers = [thumb_extended]
     
-    # Other fingers - check if tip is above PIP joint (extended)
-    # Finger is up if tip.y < pip.y (tip is higher in frame)
     tip_ids = [8, 12, 16, 20]    # Index, Middle, Ring, Pinky tips
-    pip_ids = [6, 10, 14, 18]    # Index, Middle, Ring, Pinky PIP joints
+    pip_ids = [6, 10, 14, 18]    # Index, Middle, Ring, Pinky 
     
     for tip_id, pip_id in zip(tip_ids, pip_ids):
         tip = lm[tip_id]
@@ -53,10 +47,7 @@ def fingers_up(hand, h, w):
 
 
 def detect_mode_gesture(fingers):
-    """
-    Detect gesture to enter a specific mode from detection mode.
-    Returns the mode name or None.
-    """
+    
     thumb, index, middle, ring, pinky = fingers
     
     # Check in order from most specific to least specific
@@ -98,18 +89,13 @@ def detect_mode_gesture(fingers):
 
 
 def is_fist(fingers):
-    """Check if all fingers are closed (fist)"""
     return not any(fingers)
 
 
 # ==================== SLIDESHOW AUTO-START HELPER ====================
 
 def start_ppt_slideshow(wait=1.5):
-    """Focus an open PowerPoint window and press F5 to start slideshow.
-    
-    Returns True if a PowerPoint window was found and F5 was sent.
-    wait: seconds to wait after focusing before sending F5.
-    """
+
     try:
         import pygetwindow as gw
         all_wins = gw.getAllWindows()
@@ -140,12 +126,6 @@ def start_ppt_slideshow(wait=1.5):
         return False
 
 
-# Scroll and Zoom modes are provided by external modules:
-# - Use `run_scroll()` from `scroll.py`
-# - Use `run_zoom()` from `Zoom.py`
-# These are imported at the top of this file and will be called
-# by `enter_mode()` when the corresponding gesture is detected.
-
 
 # ==================== FILE OPENING MODE ====================
 
@@ -155,7 +135,6 @@ class FileOpeningMode:
         self.mode_active = True
 
     def run(self):
-        """Run file opening mode - uses existing HandFileOpener with exit message"""
         print("\n========== FILE OPENING MODE ACTIVE ==========")
         print("Use hand gestures to navigate and open files:")
         print("  • Pinch (thumb + index): Select item")
@@ -189,7 +168,6 @@ class MasterGestureController:
         self.CONFIRMATION_FRAMES = 10  # Frames to hold gesture to confirm mode entry
 
     def run(self):
-        """Main loop - detection mode with gesture-based mode selection"""
         print("\n")
         print("==============================================")
         print("   MASTER GESTURE CONTROLLER - DETECTION MODE   ")

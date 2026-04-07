@@ -26,7 +26,7 @@ class HandFileOpener:
         self.hands = self.mp_hands.Hands(max_num_hands=1, min_detection_confidence=0.6)
         self.mp_draw = mp.solutions.drawing_utils
         self.cap = cv2.VideoCapture(0)
-        self.state = 'menu'  # menu, browse, opened
+        self.state = 'menu' 
         self.choice = None
         self.files = []
         self.page = 0
@@ -95,13 +95,10 @@ class HandFileOpener:
         hand_size = np.hypot(ref_x - wrist_x, ref_y - wrist_y)
         hand_size = max(hand_size, 20.0)
 
-        # when fist, avg fingertip distance to wrist should be small relative to hand size
-        # use a slightly more forgiving multiplier so fist works at varying distances
+        
         return avg < (hand_size * 0.7)
 
     def detect_back_gesture(self, lm, img_w, img_h):
-        # index and middle finger up, ring and pinky down -> back gesture
-        # compare tip y to pip y: tip.y < pip.y means finger is extended (camera coords)
         try:
             idx_up = lm[8].y < lm[6].y
             mid_up = lm[12].y < lm[10].y
@@ -112,9 +109,6 @@ class HandFileOpener:
             return False
 
     def close_window_by_title(self, title_substr):
-        """Try several methods to close a window whose title contains title_substr.
-        Returns True if a close action was performed.
-        """
         title_substr = title_substr.lower()
         # try pygetwindow first
         try:
@@ -341,7 +335,6 @@ class HandFileOpener:
                 else:
                     self.back_start = None
 
-            # update pinch state
             if not pinch:
                 self.pinched = False
                 self.pinch_start = None

@@ -1,9 +1,7 @@
-#"""Scroll mode runner usable as module or script."""
 import cv2
 import mediapipe as mp
 import pyautogui
 import time
-
 
 def run_scroll():
     mp_hands = mp.solutions.hands
@@ -96,7 +94,6 @@ def run_scroll():
 
     cap.release()
     cv2.destroyAllWindows()
-
 
 if __name__ == '__main__':
     run_scroll()

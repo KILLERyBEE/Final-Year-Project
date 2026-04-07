@@ -1,14 +1,3 @@
-"""volume_control.py
-Gesture-driven smooth volume control.
-
-Gestures
---------
-  ☝  Index finger only       → Volume UP   (hold to keep raising)
-  ✌  Index + Middle up       → Volume DOWN (hold to keep lowering)
-  🤙  Thumb + Index + Pinky   → EXIT to Master Controller
-  ESC / 'q'                  → Quit
-"""
-
 import cv2
 import mediapipe as mp
 import numpy as np
@@ -41,7 +30,6 @@ mpDraw  = mp.solutions.drawing_utils
 
 # ── Helper ───────────────────────────────────────────────────────────────────
 def finger_up(lm, tip, pip):
-    """True if finger tip is above its PIP joint (finger extended)."""
     return lm[tip].y < lm[pip].y - 0.02
 
 
@@ -160,6 +148,5 @@ def run_volume_control():
     print("Exiting Volume Control Mode...")
 
 
-# ── Standalone entry point ────────────────────────────────────────────────────
 if __name__ == "__main__":
     run_volume_control()

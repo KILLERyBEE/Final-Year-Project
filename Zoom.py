@@ -16,8 +16,8 @@ def run_zoom():
     zoom_out_frames = 0
     fist_frames = 0
 
-    GESTURE_FRAMES_REQUIRED = 8  # Increased for more stability
-    ZOOM_COOLDOWN = 0.5  # Increased cooldown to prevent rapid firing
+    GESTURE_FRAMES_REQUIRED = 8  
+    ZOOM_COOLDOWN = 0.5  
     last_action_time = 0
 
     zoom_mode_active = True

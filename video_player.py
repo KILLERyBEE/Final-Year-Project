@@ -1,29 +1,3 @@
-"""video_player.py
-Gesture-driven video browser for the Final Year Project master controller.
-
-Features
---------
-- Scans VIDEO_FOLDER for common video file types.
-- Displays them in a paginated list in an OpenCV window (same style as open_files.py).
-- Pinch gesture (thumb + index, held for PINCH_HOLD seconds) → opens selected video
-  in the system default external player via os.startfile().
-- All-five-fingers-up gesture held for PALM_HOLD seconds → toggles Play/Pause via
-  the Windows media-key API (works with most media players).
-  A 2-second cooldown prevents accidental double-triggers.
-- Back gesture (index + middle up, others down) held for BACK_HOLD seconds → previous page.
-- Master-exit gesture (thumb + index + pinky, others down) held for MASTER_EXIT_HOLD
-  seconds → releases camera and returns to master controller.
-- ESC key → quit.
-
-Gesture summary
----------------
-  Pinch          (thumb ∩ index touching)          → open highlighted video
-  Open palm      (all 5 fingers up, held 2 s)      → play / pause toggle
-  Peace sign     (index + middle up)               → go back to previous page / menu
-  Thumb+Idx+Pinky (held 2 s)                       → exit back to master controller
-  ESC key                                          → quit immediately
-"""
-
 import cv2
 import mediapipe as mp
 import numpy as np
@@ -44,10 +18,6 @@ try:
 except Exception:
     win32gui = None
     win32con = None
-
-# ---------------------------------------------------------------------------
-# Optional Windows media-key support
-# ---------------------------------------------------------------------------
 try:
     _user32 = ctypes.windll.user32
     _KEYEVENTF_KEYUP  = 0x0002
@@ -62,22 +32,19 @@ except Exception:
     def _send_play_pause():
         pass  # non-Windows fallback
 
-# ---------------------------------------------------------------------------
-# Constants
-# ---------------------------------------------------------------------------
+
 VIDEO_FOLDER = Path(__file__).parent / 'VIDEO_FOLDER'
 VIDEO_EXTS   = ('.mp4', '.mkv', '.avi', '.mov', '.wmv', '.webm', '.flv', '.m4v')
 
-PINCH_HOLD        = 0.4   # seconds to hold pinch to confirm file open
-BACK_HOLD         = 0.35  # seconds to hold back gesture to confirm
-FIST_HOLD         = 0.5   # seconds to hold fist to close video
-PALM_HOLD         = 1.0   # seconds to hold open palm for play/pause
-PALM_COOLDOWN     = 1.5   # cooldown between consecutive play/pause triggers
-MASTER_EXIT_HOLD  = 2.0   # seconds to hold master-exit gesture
-CURSOR_ALPHA      = 0.35  # lower = smoother cursor (exponential moving average)
-PER_PAGE          = 8     # files per page in the browser
+PINCH_HOLD        = 0.4   
+BACK_HOLD         = 0.35  
+FIST_HOLD         = 0.5   
+PALM_HOLD         = 1.0   
+PALM_COOLDOWN     = 1.5   
+MASTER_EXIT_HOLD  = 2.0   
+CURSOR_ALPHA      = 0.35  
+PER_PAGE          = 8     
 
-# Colours (BGR)
 C_WHITE   = (255, 255, 255)
 C_BLACK   = (0,   0,   0  )
 C_GREEN   = (80,  220, 100)
@@ -87,10 +54,6 @@ C_PALM    = (80,  255, 180)
 C_HEADER  = (30,  30,  60 )
 C_ROW_HL  = (60,  60,  100)
 
-
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
 
 def find_videos():
     """Return sorted list of absolute paths to video files in VIDEO_FOLDER."""
@@ -111,9 +74,6 @@ def _hand_size(lm, w, h):
     return max(20.0, float(np.linalg.norm(ref - wrist)))
 
 
-# ---------------------------------------------------------------------------
-# Main class
-# ---------------------------------------------------------------------------
 
 class VideoPlayer:
     """Gesture-driven video browser with external-player launch."""
@@ -151,9 +111,6 @@ class VideoPlayer:
         # Cursor smoothing  (np.ndarray | None)
         self.cursor_smooth = None
 
-    # ------------------------------------------------------------------
-    # Gesture detectors
-    # ------------------------------------------------------------------
 
     def _detect_pinch(self, lm, w, h):
         """Returns (is_pinched, cursor_point)."""
@@ -171,7 +128,6 @@ class VideoPlayer:
         return avg < _hand_size(lm, w, h) * 0.72
 
     def _detect_back_gesture(self, lm):
-        """index + middle up, ring + pinky down."""
         try:
             return (lm[8].y  < lm[6].y  and
                     lm[12].y < lm[10].y and
@@ -181,7 +137,6 @@ class VideoPlayer:
             return False
 
     def _detect_open_palm(self, lm):
-        """All four fingers AND thumb clearly extended."""
         try:
             thumb_ext  = abs(lm[4].x - lm[2].x) > 0.04
             index_ext  = lm[8].y  < lm[6].y  - 0.02
@@ -193,7 +148,6 @@ class VideoPlayer:
             return False
 
     def _detect_master_exit(self, lm):
-        """Thumb + index + pinky up; middle + ring down."""
         try:
             thumb_up  = lm[4].x < lm[3].x
             idx_up    = lm[8].y  < lm[6].y  - 0.02
@@ -205,13 +159,11 @@ class VideoPlayer:
             return False
 
     def _close_video(self):
-        """Attempt to close the externally opened video player window."""
         if not self.last_opened:
             return False
         title_sub = self.last_opened.lower()
         closed = False
 
-        # Method 1: pygetwindow
         try:
             if gw:
                 wins = gw.getAllWindows()
@@ -227,7 +179,6 @@ class VideoPlayer:
         except Exception:
             pass
 
-        # Method 2: win32gui WM_CLOSE
         if not closed:
             try:
                 if win32gui and win32con:
@@ -243,7 +194,6 @@ class VideoPlayer:
             except Exception:
                 pass
 
-        # Method 3: Alt+F4 fallback
         if not closed:
             try:
                 pyautogui.hotkey('alt', 'f4')
@@ -257,9 +207,6 @@ class VideoPlayer:
             self.is_paused   = False
         return closed
 
-    # ------------------------------------------------------------------
-    # Hit-test (which row is the cursor hovering over?)
-    # ------------------------------------------------------------------
 
     def _row_hit(self, cursor, y0, gap, n):
         if not cursor:
@@ -270,15 +217,10 @@ class VideoPlayer:
             if 40 < cx < 760 and y - 28 < cy < y + 10:
                 return i
         return None
-
-    # ------------------------------------------------------------------
-    # Drawing
-    # ------------------------------------------------------------------
-
+    
     def _draw_browser(self, frame, cursor, pinch, pinch_elapsed):
         h, w, _ = frame.shape
 
-        # Dark header
         cv2.rectangle(frame, (0, 0), (w, 55), C_HEADER, -1)
         cv2.putText(frame, 'VIDEO PLAYER', (16, 36),
                     cv2.FONT_HERSHEY_SIMPLEX, 1.1, C_WHITE, 2)
@@ -350,10 +292,6 @@ class VideoPlayer:
             state_lbl = '⏸ PAUSED' if self.is_paused else '▶ PLAYING'
             cv2.putText(frame, f'{state_lbl}: {self.last_opened}', (12, h - 48),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, C_CYAN, 1)
-
-    # ------------------------------------------------------------------
-    # Main loop
-    # ------------------------------------------------------------------
 
     def run(self):
         self._palm_holding = False  # reset on each run() call
@@ -429,7 +367,6 @@ class VideoPlayer:
                 else:
                     self.master_exit_start = None
 
-                # ── Open-palm → play / pause (hold PALM_HOLD secs) ──
                 self._palm_holding = open_palm
                 if open_palm:
                     if self.palm_start is None:
@@ -445,8 +382,6 @@ class VideoPlayer:
                               'PAUSED' if self.is_paused else 'PLAYING')
                 else:
                     self.palm_start = None
-
-                # ── Back gesture → previous page ────────────────────
                 if back_g and not pinch:
                     if self.back_start is None:
                         self.back_start = time.time()
@@ -459,7 +394,6 @@ class VideoPlayer:
                 else:
                     self.back_start = None
 
-                # ── Pinch → open video ───────────────────────────────
                 hovered_row = self._row_hit(cursor, 90, 55, PER_PAGE)
                 if pinch and hovered_row is not None:
                     if self.pinch_start is None:
@@ -486,13 +420,10 @@ class VideoPlayer:
                         self.pinch_start = None
                 elif not pinch:
                     self.pinch_start = None
-
-                # Reset pinch guard once finger released
                 if not pinch:
                     self.pinched = False
 
             else:
-                # No hand detected — reset all timers
                 self.cursor_smooth     = None
                 self.pinch_start       = None
                 self.pinched           = False
@@ -516,11 +447,6 @@ class VideoPlayer:
     def _cleanup(self):
         self.cap.release()
         cv2.destroyAllWindows()
-
-
-# ---------------------------------------------------------------------------
-# Entry point (standalone run)
-# ---------------------------------------------------------------------------
 
 def run_video_player():
     """Called by master_gesture_controller to launch this mode."""

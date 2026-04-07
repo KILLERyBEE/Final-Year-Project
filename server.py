@@ -1,17 +1,3 @@
-"""
-AirNav – server.py
-A lightweight Flask backend that bridges the HTML frontend
-with the master_gesture_controller.py Python script.
-
-Endpoints:
-  POST /start  → launches master_gesture_controller.py
-  POST /stop   → kills the running process
-  GET  /status → returns whether the process is running
-
-Run this file first, then open Frontend/index.html in your browser.
-    python server.py
-"""
-
 import subprocess
 import sys
 import os
