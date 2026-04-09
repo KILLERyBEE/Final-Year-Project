@@ -110,8 +110,8 @@ def start_ppt_slideshow(wait=1.5):
                 win.activate()
             except Exception:
                 pass
-            time.sleep(wait)          # give PowerPoint time to focus
-            pyautogui.press('f5')     # F5 = Start Slideshow from beginning
+            time.sleep(wait)         
+            pyautogui.press('f5')     
             time.sleep(0.5)
             print("  [SlideMode] Sent F5 → Slideshow started!")
             return True
@@ -168,25 +168,21 @@ class MasterGestureController:
         self.CONFIRMATION_FRAMES = 10  # Frames to hold gesture to confirm mode entry
 
     def run(self):
-        print("\n")
-        print("==============================================")
-        print("   MASTER GESTURE CONTROLLER - DETECTION MODE   ")
-        print("==============================================")
         print("  Gesture Guide:")
         print("  ─────────────────────────────────────────────────────")
-        print("  [1] 🤜 Thumb + Index             → FILE OPENING MODE   ")
-        print("  [2] 🖐 All 5 Fingers            → SCROLL MODE         ")
-        print("  [3] ☝  Index Only               → ZOOM MODE           ")
-        print("  [4] ✌  Index + Middle           → SLIDE TRAVEL MODE   ")
-        print("  [5] 🤟 Middle + Ring + Pinky    → SCREENSHOT MODE     ")
-        print("  [6] 🖖 Index+Middle+Ring        → VIDEO PLAYER MODE   ")
-        print("  [7] 🤙 Thumb + Pinky (Shaka)    → APP SWITCH MODE     ")
-        print("  [8] 🫲 Index + Pinky            → VOLUME CONTROL MODE ")
+        print("  [1] Thumb + Index             → FILE OPENING MODE   ")
+        print("  [2] All 5 Fingers            → SCROLL MODE         ")
+        print("  [3] Index Only               → ZOOM MODE           ")
+        print("  [4] Index + Middle           → SLIDE TRAVEL MODE   ")
+        print("  [5] Middle + Ring + Pinky    → SCREENSHOT MODE     ")
+        print("  [6] Index+Middle+Ring        → VIDEO PLAYER MODE   ")
+        print("  [7] Thumb + Pinky (Shaka)    → APP SWITCH MODE     ")
+        print("  [8] Index + Pinky            → VOLUME CONTROL MODE ")
         print("  ─────────────────────────────────────────────────────")
         print("  Hold gesture for 10 frames to confirm entry.")
         print("  Fist (in any mode) → EXIT back to Detection Mode")
         print("  ESC → Quit application")
-        print("======================================================\n")
+
         
         while True:
             try:
@@ -216,13 +212,11 @@ class MasterGestureController:
                         fingers = fingers_up(hand_landmarks, h, w)
                         gesture_mode = detect_mode_gesture(fingers)
                         
-                        # Debug output
                         finger_str = f"[T:{int(fingers[0])}, I:{int(fingers[1])}, M:{int(fingers[2])}, R:{int(fingers[3])}, P:{int(fingers[4])}]"
                         
                         if gesture_mode:
                             self.confirmation_frames += 1
                             
-                            # Display gesture being detected
                             mode_name = gesture_mode.replace("_", " ").upper()
                             cv2.putText(frame, f"Detected: {mode_name}", (15, h - 80),
                                        cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 255), 2)
@@ -232,7 +226,6 @@ class MasterGestureController:
                                        (15, h - 40),
                                        cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 0), 1)
                             
-                            # Progress bar
                             bar_width = int((self.confirmation_frames / self.CONFIRMATION_FRAMES) * 300)
                             cv2.rectangle(frame, (15, h - 20), (15 + bar_width, h - 10), (0, 255, 0), -1)
                             cv2.rectangle(frame, (15, h - 20), (315, h - 10), (255, 255, 255), 2)
@@ -291,14 +284,11 @@ class MasterGestureController:
 
             elif mode_name == "slide_mode":
                 print("\n>>> Entering SLIDE TRAVEL MODE <<<\n")
-                # Auto-start slideshow if PowerPoint is already open
                 start_ppt_slideshow(wait=1.5)
-                # Delegate to slidetravel module
                 run_slide_travel()
 
             elif mode_name == "ss_mode":
                 print("\n>>> Entering SCREENSHOT MODE <<<\n")
-                # Delegate to gesture_screenshot module
                 run_screenshot()
 
             elif mode_name == "video_mode":
@@ -323,8 +313,6 @@ class MasterGestureController:
         # Reset confirmation frames to prevent accidental re-entry
         self.confirmation_frames = 0
 
-
-# ==================== MAIN ENTRY POINT ====================
 
 if __name__ == "__main__":
     controller = MasterGestureController()

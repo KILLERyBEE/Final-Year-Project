@@ -35,14 +35,13 @@ class HandFileOpener:
         self.pinched = False
         self.last_pinchtime = 0
         self.pinch_start = None
-        self.PINCH_HOLD = 0.35  # seconds required to hold pinch to confirm selection
+        self.PINCH_HOLD = 0.35 
         self.cursor = None
-        self.cursor_alpha = 0.35  # smoothing factor (0..1)
+        self.cursor_alpha = 0.35  
         self.back_start = None
         self.BACK_HOLD = 0.3
         self.FIST_HOLD = 0.35
         self.fist_start = None
-        # Master-exit gesture settings (thumb + index + pinky)
         self.MASTER_EXIT_HOLD = 2.0
         self.master_exit_start = None
 
@@ -62,19 +61,16 @@ class HandFileOpener:
         return results
 
     def detect_pinch(self, lm, img_w, img_h):
-        # lm expected to be list of landmarks normalized
         x_thumb, y_thumb = lm[4].x * img_w, lm[4].y * img_h
         x_index, y_index = lm[8].x * img_w, lm[8].y * img_h
         dist = np.hypot(x_thumb - x_index, y_thumb - y_index)
 
-        # compute a reference hand size (wrist to middle-finger-mcp) so thresholds scale with distance
         ref_x, ref_y = lm[9].x * img_w, lm[9].y * img_h
         wrist_x, wrist_y = lm[0].x * img_w, lm[0].y * img_h
         hand_size = np.hypot(ref_x - wrist_x, ref_y - wrist_y)
-        # safety: avoid zero
         hand_size = max(hand_size, 20.0)
 
-        # pinch triggered when thumb-index distance is small relative to hand size
+    
         pinch_thresh = hand_size * 0.28
         is_pinched = dist < pinch_thresh
         return is_pinched, (int(x_index), int(y_index)), dist, hand_size
@@ -137,7 +133,6 @@ class HandFileOpener:
         except Exception:
             pass
 
-        # fallback to win32gui post WM_CLOSE
         try:
             if win32gui:
                 closed_any = False
@@ -192,14 +187,12 @@ class HandFileOpener:
                         self.cursor = (1 - self.cursor_alpha) * self.cursor + self.cursor_alpha * np.array(cursor_pt, dtype=float)
                     cursor = (int(self.cursor[0]), int(self.cursor[1]))
 
-                # --- Master-exit gesture detection (thumb + index + pinky) ---
                 try:
                     thumb_up = lm[4].x < lm[3].x
                     idx_up = lm[8].y < lm[6].y - 0.02
                     mid_up = lm[12].y < lm[10].y - 0.02
                     ring_up = lm[16].y < lm[14].y - 0.02
                     pinky_up = lm[20].y < lm[18].y - 0.02
-                    # pattern: thumb, index, pinky up; middle and ring down
                     if thumb_up and idx_up and pinky_up and (not mid_up) and (not ring_up):
                         if self.master_exit_start is None:
                             self.master_exit_start = time.time()
@@ -212,12 +205,9 @@ class HandFileOpener:
                     else:
                         self.master_exit_start = None
                 except Exception:
-                    # ignore landmark indexing errors
                     self.master_exit_start = None
 
-            # global fist-close (works from any state) - requires last_opened
             if self.last_opened and fist:
-                # require hold to avoid accidental closes
                 if self.fist_start is None:
                     self.fist_start = time.time()
                 f_elapsed = time.time() - self.fist_start
@@ -227,12 +217,10 @@ class HandFileOpener:
                     closed = self.close_window_by_title(os.path.basename(self.last_opened))
                     if not closed:
                         try:
-                            # fallback: activate and send Alt+F4
                             pyautogui.hotkey('alt', 'f4')
                             time.sleep(0.15)
                         except Exception:
                             pass
-                    # clear record of last opened file and return to menu
                     self.last_opened = None
                     self.fist_start = None
                     self.pinched = False
@@ -240,15 +228,12 @@ class HandFileOpener:
             else:
                 self.fist_start = None
 
-            # UI
             if self.state == 'menu':
                 self.draw_menu(frame, cursor)
-                # require pinch to be held for PINCH_HOLD seconds
                 if pinch:
                     if self.pinch_start is None:
                         self.pinch_start = time.time()
                     elapsed = time.time() - self.pinch_start
-                    # draw hold progress
                     if cursor:
                         cv2.circle(frame, cursor, 18, (255, 255, 255), 1)
                         if elapsed > 0:
@@ -268,7 +253,6 @@ class HandFileOpener:
 
             elif self.state == 'browse':
                 self.draw_file_list(frame, cursor)
-                # same held-pinch logic for opening files
                 if pinch:
                     if self.pinch_start is None:
                         self.pinch_start = time.time()
@@ -287,7 +271,6 @@ class HandFileOpener:
                                 try:
                                     os.startfile(path)
                                     self.last_opened = path
-                                    # move to 'opened' state so user can fist-close
                                     self.state = 'opened'
                                     self.choice = None
                                     self.files = []
@@ -301,7 +284,6 @@ class HandFileOpener:
                 else:
                     self.pinch_start = None
 
-                # back gesture (index+middle) with hold to navigate back
                 if back_g:
                     if self.back_start is None:
                         self.back_start = time.time()
@@ -321,7 +303,6 @@ class HandFileOpener:
 
             elif self.state == 'opened':
                 self.draw_opened(frame)
-                # back gesture (index+middle) returns to menu WITHOUT closing the file
                 if back_g:
                     if self.back_start is None:
                         self.back_start = time.time()
@@ -354,13 +335,11 @@ class HandFileOpener:
         x = 60
         for i, (name, _) in enumerate(self.types):
             y = start_y + i * gap
-            # draw thin white border box (transparent inside)
             cv2.rectangle(img, (x - 10, y - 30), (x + 220, y + 10), (255, 255, 255), 1)
             cv2.putText(img, name, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 0, 0), 1)
             if cursor:
                 cx, cy = cursor
                 if x - 10 < cx < x + 220 and y - 30 < cy < y + 10:
-                    # hover: slightly thicker white border
                     cv2.rectangle(img, (x - 10, y - 30), (x + 220, y + 10), (255, 255, 255), 2)
 
     def menu_hit_test(self, cursor, shape):

@@ -82,7 +82,7 @@ def _close_ppt():
 
     if not closed:
         try:
-            pyautogui.press('escape')   # exit slideshow → back to normal view
+            pyautogui.press('escape')   
             time.sleep(0.3)
             pyautogui.hotkey('alt', 'f4')
             closed = True
@@ -159,13 +159,12 @@ def run_slide_travel():
                 # Cooldown to avoid multiple slide jumps
                 if current_time - last_action_time > 1 and not fist_detected:
 
-                    # ☝️ Index finger only → Next Slide
                     if fingers == [False, True, False, False, False]:
                         print("NEXT SLIDE")
                         pyautogui.press("right")
                         last_action_time = current_time
 
-                    # ✌️ Index + Middle → Previous Slide
+                   
                     elif fingers == [False, True, True, False, False]:
                         print("PREVIOUS SLIDE")
                         pyautogui.press("left")
@@ -175,12 +174,12 @@ def run_slide_travel():
             fist_start = None  # reset if no hand visible
 
         # Hint overlay
-        cv2.putText(frame, '☝=Next  ✌=Prev  Fist=ClosePPT  T+I+P=Exit',
+        cv2.putText(frame, 'Index :- Next  Index+Middle :- Prev  Fist=ClosePPT  T+I+P=Exit',
                     (10, 25), cv2.FONT_HERSHEY_SIMPLEX, 0.55, (255, 255, 255), 1)
 
         cv2.imshow("PPT Gesture Control", frame)
 
-        if cv2.waitKey(1) & 0xFF == 27:  # ESC key
+        if cv2.waitKey(1) & 0xFF == 27:  
             break
 
     cap.release()
@@ -188,6 +187,5 @@ def run_slide_travel():
     print("Exiting Slide Travel Mode...")
 
 
-# Allow running standalone for testing
 if __name__ == "__main__":
     run_slide_travel()

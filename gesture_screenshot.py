@@ -113,8 +113,8 @@ def take_professional_screenshot():
 def run_screenshot():
     """Run the gesture screenshot mode — callable from master controller."""
     print("\n========== SCREENSHOT MODE ACTIVE ==========")
-    print("  ☝️  Index finger only       → TAKE SCREENSHOT (hold 3s)")
-    print("  🤙  Thumb + Index + Pinky   → EXIT to Master  (hold 2s)")
+    print("Index finger only       → TAKE SCREENSHOT (hold 3s)")
+    print("Thumb + Index + Pinky   → EXIT to Master  (hold 2s)")
     print("  Press ESC to EXIT")
     print("=============================================\n")
 
@@ -187,12 +187,11 @@ def run_screenshot():
             if are_fingers_up(hand_landmarks):
                 if gesture_countdown_start is None:
                     gesture_countdown_start = current_time
-                    print("Gesture detected! Countdown started...")
 
                 elapsed   = current_time - gesture_countdown_start
                 remaining = max(0.0, COUNTDOWN_DURATION - elapsed)
 
-                cv2.putText(frame, f"☝️ SCREENSHOT in {remaining:.1f}s", (15, h - 100),
+                cv2.putText(frame, f"SCREENSHOT in {remaining:.1f}s", (15, h - 100),
                             cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 255, 0), 3)
                 cv2.putText(frame, str(int(remaining) + 1 if remaining > 0 else 0),
                             (w // 2 - 30, h // 2 + 40),

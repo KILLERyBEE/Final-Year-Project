@@ -127,15 +127,15 @@ def run_volume_control():
                     cv2.FONT_HERSHEY_SIMPLEX, 0.65, (255, 255, 255), 2)
 
         if gesture == 'up':
-            label, colour = '  VOL UP  \u25b2', (0, 220, 100)
+            label, colour = '  VOLUME UP', (0, 220, 100)
         elif gesture == 'down':
-            label, colour = '  VOL DOWN \u25bc', (0, 120, 255)
+            label, colour = '  VOLUME DOWN', (0, 120, 255)
         else:
             label, colour = 'Show Gesture', (180, 180, 180)
 
         cv2.putText(img, label, (20, 50),
                     cv2.FONT_HERSHEY_SIMPLEX, 1.0, colour, 3)
-        cv2.putText(img, '\u261d=Vol Up | \u270c=Vol Down | T+I+Pinky=Exit | ESC=Quit',
+        cv2.putText(img, '\u261d=VOLUME Up | \u270c=VOLUME Down | T+I+Pinky=Exit | ESC=Quit',
                     (10, h - 12), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (180, 180, 180), 1)
 
         cv2.imshow("Gesture Volume Control", img)

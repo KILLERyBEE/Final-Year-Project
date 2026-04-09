@@ -56,7 +56,6 @@ C_ROW_HL  = (60,  60,  100)
 
 
 def find_videos():
-    """Return sorted list of absolute paths to video files in VIDEO_FOLDER."""
     results = []
     if not VIDEO_FOLDER.exists():
         return results
@@ -68,7 +67,6 @@ def find_videos():
 
 
 def _hand_size(lm, w, h):
-    """Wrist-to-MCP reference distance, clamped to ≥ 20 px."""
     ref   = np.array([lm[9].x * w,  lm[9].y  * h])
     wrist = np.array([lm[0].x * w,  lm[0].y  * h])
     return max(20.0, float(np.linalg.norm(ref - wrist)))
@@ -76,20 +74,18 @@ def _hand_size(lm, w, h):
 
 
 class VideoPlayer:
-    """Gesture-driven video browser with external-player launch."""
+    
 
     def __init__(self):
         self.videos = find_videos()
         self.page   = 0
 
-        # MediaPipe
         self.mp_hands = mp.solutions.hands
         self.hands    = self.mp_hands.Hands(max_num_hands=1,
                                             min_detection_confidence=0.65,
                                             min_tracking_confidence=0.65)
         self.mp_draw  = mp.solutions.drawing_utils
 
-        # Camera
         self.cap = cv2.VideoCapture(0)
 
 
@@ -108,12 +104,10 @@ class VideoPlayer:
         self.is_paused:   bool         = False
         self.last_opened: str | None   = None   # basename of last opened file
 
-        # Cursor smoothing  (np.ndarray | None)
         self.cursor_smooth = None
 
 
     def _detect_pinch(self, lm, w, h):
-        """Returns (is_pinched, cursor_point)."""
         tx, ty = lm[4].x * w, lm[4].y * h
         ix, iy = lm[8].x * w, lm[8].y * h
         dist   = np.hypot(tx - ix, ty - iy)

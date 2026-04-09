@@ -26,9 +26,8 @@ def run_scroll():
 
         return fingers  # [thumb, index, middle, ring, pinky]
 
-    print("\n========== SCROLL MODE ACTIVE ==========")
     exit_start = None
-    EXIT_HOLD = 2.0  # seconds required to return to master controller
+    EXIT_HOLD = 2.0 
     while True:
         success, frame = cap.read()
         if not success:
@@ -47,8 +46,7 @@ def run_scroll():
                 fingers = fingers_up(hand_landmarks)
                 current_time = time.time()
 
-                # Check for master-exit gesture: Thumb + Index + Pinky up (others down)
-                # fingers = [thumb, index, middle, ring, pinky]
+               
                 if fingers[0] and fingers[1] and (not fingers[2]) and (not fingers[3]) and fingers[4]:
                     if exit_start is None:
                         exit_start = current_time
@@ -63,33 +61,28 @@ def run_scroll():
                 # Cooldown to avoid repeated triggers
                 if current_time - last_action_time > 0.8:
 
-                    # Fist (no action)
                     if fingers == [False, False, False, False, False]:
                         last_action_time = current_time
 
-                    # Index finger → Scroll UP (normal)
                     elif fingers == [False, True, False, False, False]:
                         pyautogui.scroll(300)
                         last_action_time = current_time
 
-                    # Two fingers → Scroll DOWN (normal)
                     elif fingers == [False, True, True, False, False]:
                         pyautogui.scroll(-300)
                         last_action_time = current_time
 
-                    # Thumbs up → FAST Scroll UP
                     elif fingers == [True, False, False, False, False]:
                         pyautogui.scroll(3000)
                         last_action_time = current_time
 
-                    # Open Palm → FAST Scroll DOWN
                     elif fingers == [True, True, True, True, True]:
                         pyautogui.scroll(-3000)
                         last_action_time = current_time
 
         cv2.imshow("Gesture Control - Scroll Mode", frame)
 
-        if cv2.waitKey(1) & 0xFF == 27:  # ESC
+        if cv2.waitKey(1) & 0xFF == 27:  
             break
 
     cap.release()

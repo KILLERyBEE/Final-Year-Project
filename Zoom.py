@@ -58,8 +58,7 @@ def run_zoom():
         print("Starting Zoom Mode...")
         print("Gestures: Index -> Zoom In; Index+Middle -> Zoom Out; Fist -> Exit")
         exit_start = None
-        EXIT_HOLD = 2.0  # seconds required to return to master controller
-
+        EXIT_HOLD = 2.0 
         while zoom_mode_active:
             ret, frame = cap.read()
             if not ret:
@@ -80,8 +79,7 @@ def run_zoom():
                 fingers = fingers_up(hand, h, w)
                 gesture = detect_gesture(fingers)
 
-                # Check for master-exit gesture: Thumb + Index + Pinky up (others down)
-                # fingers = [thumb, index, middle, ring, pinky]
+               
                 if fingers[0] and fingers[1] and (not fingers[2]) and (not fingers[3]) and fingers[4]:
                     if exit_start is None:
                         exit_start = current_time
@@ -91,7 +89,6 @@ def run_zoom():
                 else:
                     exit_start = None
 
-                # Use local counters captured by closure via mutable types
                 if gesture != current_gesture:
                     zoom_in_frames = 0
                     zoom_out_frames = 0
@@ -141,7 +138,6 @@ def run_zoom():
                 current_gesture = None
 
             cv2.putText(frame, "ZOOM MODE - ACTIVE", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
-            cv2.putText(frame, "Fist to EXIT", (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 255), 2)
 
             cv2.imshow("Gesture Control - Zoom Mode", frame)
             key = cv2.waitKey(1) & 0xFF
